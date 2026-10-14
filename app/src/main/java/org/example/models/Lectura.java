@@ -1,5 +1,7 @@
 package org.example.models;
 
+import java.util.function.Function;
+
 public class Lectura<T> {
     private String idSensor;
     private T valor;
@@ -17,6 +19,17 @@ public class Lectura<T> {
     }
     public String getUnidad() {
         return unidad;
+    }
+    public <R> Lectura<R> transformar(Function<T, R> conversor, String nuevaUnidad){
+        if(conversor== null){
+            throw new IllegalArgumentException("El conversor no puede ser nulo");
+            
+        }
+        R nuevoValor=conversor.apply(valor);
+            if(nuevoValor== null){
+                throw new IllegalArgumentException("El resultado no puede ser nulo");
+            }
+        return new Lectura<> (idSensor, nuevoValor ,nuevaUnidad);
     }
 
     
